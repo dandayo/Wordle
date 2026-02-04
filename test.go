@@ -1,10 +1,10 @@
 package main
 
 import(
-
 	"fmt"
 	"bufio"
 	"os"
+	"strings"
 )
 
 const (
@@ -32,11 +32,12 @@ func IsLower(s string) bool {
 	return true
 }
 
-func Game(input, word string) {
+func Game(input, word string){
 	if IsLower(input) {
 		fmt.Println("Use only lowercase")
 		return
 	}
+
 	var result string
 	if input != word {
 		for i := 0; i < 5; i++ {
@@ -72,7 +73,7 @@ func Letters() string {
 	return answer
 }
 
-var alphabet string = Letters()
+
 
 func CheckLetters(input string) string {
 	var check string
@@ -83,37 +84,54 @@ func CheckLetters(input string) string {
 	return check
 }
 
-//checkWord := rune(word1[i])
-
 var word string = "hello"
+var alphabet string = Letters()
 
 func UpdateLetters(input, word string) string {
 	new := CheckLetters(input)
 	var newAnswer string
+	alphabet = strings.TrimSpace(alphabet)
 	for i := 0; i < len(alphabet); i++ {
 		var checkIn bool = false
 		for _, a := range word {
-			if rune(alphabet[i]) == a {
+			if rune(alphabet[i]) == a-'a'+'A' {
 				checkIn = true
+			} else {
+				fmt.Print("Try again")
 			}
+
 		}
 		for _, v := range new {
 			if rune(alphabet[i]) == v {
-				if checkIn == true {
-					newAnswer += string(rune(alphabet[i]))
-				} else {
+				if checkIn != true {
 					i++
 				}
 			}
 		}
-		newAnswer += string(rune(alphabet[i]))
+		newAnswer += string(rune(alphabet[i]))+ " "
 	}
 	alphabet = newAnswer
+	return alphabet
+}
+
+func StartGame(){
+	var count int = 0
+	var won bool = false
+	for ;count <= 5; count++{
+		input := Input()
+		fmt.Println(UpdateLetters(input, word))
+		Game(input, word)
+		if input == word {
+			won = true
+			fmt.Println("You won! This word is ", word)
+		}
+		if count == 5 && won == false{
+			fmt.Println("You lost!!!! This word is ", word)
+		}
+	}
 }
 
 
 func main() {
-	input := Input()
-	//fmt.Println(UpdateLetters(input, word1))
-	Game(input, "hello")
+	StartGame()
 }
