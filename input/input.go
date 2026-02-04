@@ -16,7 +16,6 @@ func Input() string {
     }
     return line
 }
-
 func Letters() string {
 	var i int = 65
 	var answer string
@@ -27,6 +26,7 @@ func Letters() string {
 }
 
 var alphabet string = Letters()
+var word1 string = "hello"
 
 func CheckLetters(input string) string {
 	var check string
@@ -37,12 +37,13 @@ func CheckLetters(input string) string {
 	return check
 }
 
-func UpdateLetters(input string) string {
+func UpdateLetters(input, word1 string) string {
 	new := CheckLetters(input)
 	var newAnswer string
 	for i := 0; i < len(alphabet); i++ {
+		checkWord := rune(word1[i])
 		for _, v := range new {
-			if rune(alphabet[i]) == v {
+			if rune(alphabet[i]) == v{
 				i++
 			}
 		}
