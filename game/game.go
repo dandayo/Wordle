@@ -1,9 +1,7 @@
 package game
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"strings"
 	"koodWordle/input"
 )
@@ -23,11 +21,8 @@ func IsLower(s string) bool {
 	return true
 }
 
-func Game(input, word string) {
-	if !IsLower(input) {
-		fmt.Println("Use only lowercase")
-		return
-	}
+var word string = "hello"
+func Game(input, word string){
 	var result string
 	if input != word {
 		for i := 0; i < 5; i++ {
@@ -52,4 +47,31 @@ func Game(input, word string) {
 		result += Green + input + Reset
 	}
 	fmt.Println(result)
+}
+
+func StartGame(){
+	var count int = 0
+	var won bool = false
+
+	for count < 5 {
+		userInput := strings.TrimSpace(input.Input())
+
+		if input.IsWord(userInput) == false{
+			continue
+		}
+
+		fmt.Println(input.UpdateLetters(userInput, word))
+		Game(userInput, word)
+
+		if userInput == word {
+			won = true
+			fmt.Println("You won! This word is", word)
+			return
+		}
+		 count++
+	}
+	if !won {
+		fmt.Println("You lost!!!! This word is", word)
+	}
+	fmt.Println("Attempts:", count)
 }
