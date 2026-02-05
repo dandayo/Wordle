@@ -20,12 +20,17 @@ func Input() string {
     if err != nil {
         fmt.Println("Mistake")
     }
-    return line
+    return strings.TrimSpace(line)
 }
 
-func IsLower(s string) bool {
-	for _, ch := range s {
+func IsWord(input string) bool {
+	if len(input) != 5 {
+		fmt.Println("Word must be 5 letters and lowcase")
+		return false
+	}
+	for _, ch := range input {
 		if ch < 'a' || ch > 'z' {
+			fmt.Println("Word must be 5 letters and lowcase")
 			return false
 		}
 	}
@@ -33,11 +38,6 @@ func IsLower(s string) bool {
 }
 
 func Game(input, word string){
-	if IsLower(input) {
-		fmt.Println("Use only lowercase")
-		return
-	}
-
 	var result string
 	if input != word {
 		for i := 0; i < 5; i++ {
@@ -96,10 +96,7 @@ func UpdateLetters(input, word string) string {
 		for _, a := range word {
 			if rune(alphabet[i]) == a-'a'+'A' {
 				checkIn = true
-			} else {
-				fmt.Print("Try again")
 			}
-
 		}
 		for _, v := range new {
 			if rune(alphabet[i]) == v {
@@ -108,7 +105,7 @@ func UpdateLetters(input, word string) string {
 				}
 			}
 		}
-		newAnswer += string(rune(alphabet[i]))+ " "
+		newAnswer += string(rune(alphabet[i]))
 	}
 	alphabet = newAnswer
 	return alphabet
@@ -117,18 +114,28 @@ func UpdateLetters(input, word string) string {
 func StartGame(){
 	var count int = 0
 	var won bool = false
-	for ;count <= 5; count++{
-		input := Input()
+
+	for count < 5 {
+		input := strings.TrimSpace(Input())
+
+		if !IsWord(input){
+			continue
+		}
+
 		fmt.Println(UpdateLetters(input, word))
 		Game(input, word)
+
 		if input == word {
 			won = true
-			fmt.Println("You won! This word is ", word)
+			fmt.Println("You won! This word is", word)
+			return
 		}
-		if count == 5 && won == false{
-			fmt.Println("You lost!!!! This word is ", word)
-		}
+		 count++
 	}
+	if !won {
+		fmt.Println("You lost!!!! This word is", word)
+	}
+	fmt.Println("Attempts:", count)
 }
 
 
