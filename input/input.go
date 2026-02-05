@@ -9,7 +9,6 @@ import (
 
 //Function for user input
 func Input() string {
-	fmt.Println("Input text:")
     reader := bufio.NewReader(os.Stdin)
     line, err := reader.ReadString('\n')
     if err != nil {
@@ -30,12 +29,12 @@ func Letters() string {
 
 func IsWord(input string) bool {
 	if len(input) != 5 {
-		fmt.Println("Word must be 5 letters and lowcase")
+		fmt.Println("Your guess must be exactly 5-letter word.")
 		return false
 	}
 	for _, ch := range input {
 		if ch < 'a' || ch > 'z' {
-			fmt.Println("Word must be 5 letters and lowcase")
+			fmt.Println("Your guess must only contain lowercase letters.")
 			return false
 		}
 	}
@@ -56,23 +55,28 @@ var alphabet string = Letters()
 func UpdateLetters(input, word string) string {
 	new := CheckLetters(input)
 	var newAnswer string
-	alphabet = strings.TrimSpace(alphabet)
-	for i := 0; i < len(alphabet); i++ {
+	newAlphabet := strings.TrimSpace(alphabet)
+	for i := 0; i < len(newAlphabet); i++ {
 		var checkIn bool = false
 		for _, a := range word {
-			if rune(alphabet[i]) == a-'a'+'A' {
+			if rune(newAlphabet[i]) == a-'a'+'A' {
 				checkIn = true
 			}
 		}
 		for _, v := range new {
-			if rune(alphabet[i]) == v {
+			if rune(newAlphabet[i]) == v {
 				if checkIn != true {
 					i++
 				}
 			}
 		}
-		newAnswer += string(rune(alphabet[i]))
+		newAnswer += string(rune(newAlphabet[i]))
 	}
 	alphabet = newAnswer
 	return alphabet
+}
+
+func Exit(){
+	fmt.Println("Press Enter to exit...")
+	os.Exit(0)
 }

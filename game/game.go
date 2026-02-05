@@ -26,52 +26,58 @@ func Game(input, word string){
 	var result string
 	if input != word {
 		for i := 0; i < 5; i++ {
-			checkIn := string(input[i])
+			checkIn := input[i]
 			if input[i] == word[i] {
-				result += Green + checkIn + Reset
+				result += Green + string(rune(input[i]) - 'a' + 'A') + Reset
 			} else {
 				found := false
 				for j := 0 ; j < 5 ; j++ {
 					if input[i] == word[j] {
-						result += Yellow + string(word[j]) + Reset
+						result += Yellow + string(rune(word[j]) - 'a' + 'A') + Reset
 						found = true
 						break
 					}
 				}
 				if found == false {
-					result += checkIn
+					result += string(rune(checkIn) - 'a' + 'A')
 				}
 			}
 		}
 	} else {
-		result += Green + input + Reset
+		for l := 0; l < 5 ; l++{
+			result += Green + string(rune(input[l]) - 'a' + 'A') + Reset
+		}
 	}
-	fmt.Println(result)
+	fmt.Println("Feedback:",result)
 }
 
-func StartGame(){
+func StartGame() {
 	var count int = 0
+	var attempts int = 5
 	var won bool = false
 
 	for count < 5 {
+		fmt.Println("Enter your guess:")
 		userInput := strings.TrimSpace(input.Input())
 
 		if input.IsWord(userInput) == false{
 			continue
 		}
 
-		fmt.Println(input.UpdateLetters(userInput, word))
+		fmt.Println("Remaining letters:",input.UpdateLetters(userInput, word))
 		Game(userInput, word)
 
 		if userInput == word {
 			won = true
-			fmt.Println("You won! This word is", word)
+			fmt.Println("Congratulations! You've guessed the word correctly.")
 			return
 		}
-		 count++
+		fmt.Println("Attempts remaining:", attempts)
+		attempts--
+		count++
 	}
 	if !won {
-		fmt.Println("You lost!!!! This word is", word)
+		fmt.Println("Game over.The correct word was:", word)
 	}
 	fmt.Println("Attempts:", count)
 }
