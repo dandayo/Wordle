@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"os"
 	"strings"
+	"strconv"
 )
 
 //Function for user input
@@ -21,7 +22,7 @@ func Letters() string {
 	var i int = 65
 	var answer string
 	for ; i <= 90; i++ {
-		answer += string(rune(i))
+		answer += string(rune(i)) + " "
 	}
 	return answer
 }
@@ -74,6 +75,34 @@ func UpdateLetters(input, word string) string {
 	}
 	alphabet = newAnswer
 	return alphabet
+}
+
+func LoadWord() ([]string, error) {
+    file, err := os.Open("wordle-words.txt")
+    if err != nil {
+        return nil, err
+    }
+    defer file.Close()
+
+    var words []string
+    scanner := bufio.NewScanner(file)
+
+    for scanner.Scan() {
+        words = append(words, scanner.Text())
+    }
+
+    return words, scanner.Err()
+}
+
+func GetIndex() int{
+	n, _ := strconv.Atoi(os.Args[1])
+	return n
+}
+
+func GetWord() string{
+	n := GetIndex()
+	word, _ := LoadWord()
+	return word[n]
 }
 
 func Exit(){

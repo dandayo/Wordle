@@ -20,9 +20,9 @@ func IsLower(s string) bool {
 	}
 	return true
 }
-
-var word string = "hello"
+var word = input.GetWord()
 func Game(input, word string){
+
 	var result string
 	if input != word {
 		for i := 0; i < 5; i++ {
@@ -56,7 +56,7 @@ func StartGame() {
 	var attempts int = 5
 	var won bool = false
 
-	for count < 5 {
+	for count < 6 {
 		fmt.Println("Enter your guess:")
 		userInput := strings.TrimSpace(input.Input())
 

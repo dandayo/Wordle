@@ -9,5 +9,4 @@ func main(){
 	user.UserName()
 	user.GreetUser()
 	game.StartGame()
-	user.Stats()
 }
