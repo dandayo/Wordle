@@ -27,6 +27,10 @@ func Letters() string {
 	return answer
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 423f628b3877e2a8053b1749bac2ff34b1d675c8
 func IsWord(input string) bool {
 	if len(input) != 5 {
 		fmt.Println("Your guess must be exactly 5-letter word.")
@@ -41,6 +45,10 @@ func IsWord(input string) bool {
 	return true
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 423f628b3877e2a8053b1749bac2ff34b1d675c8
 func CheckLetters(input string) string {
 	var check string
 	for _, v := range input {
@@ -49,7 +57,10 @@ func CheckLetters(input string) string {
 	}
 	return check
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 423f628b3877e2a8053b1749bac2ff34b1d675c8
 var alphabet string = Letters()
 
 func UpdateLetters(input, word string) string {
@@ -77,6 +88,7 @@ func UpdateLetters(input, word string) string {
 }
 
 func LoadWord() ([]string, error) {
+<<<<<<< HEAD
 	file, err := os.Open("words/wordle-words.txt")
 	if err != nil {
 		return nil, err
@@ -94,17 +106,44 @@ func LoadWord() ([]string, error) {
 }
 
 func GetIndex() int {
+=======
+    file, err := os.Open("wordle-words.txt")
+    if err != nil {
+        return nil, err
+    }
+    defer file.Close()
+
+    var words []string
+    scanner := bufio.NewScanner(file)
+
+    for scanner.Scan() {
+        words = append(words, scanner.Text())
+    }
+
+    return words, scanner.Err()
+}
+
+func GetIndex() int{
+>>>>>>> 423f628b3877e2a8053b1749bac2ff34b1d675c8
 	n, _ := strconv.Atoi(os.Args[1])
 	return n
 }
 
+<<<<<<< HEAD
 func GetWord() string {
+=======
+func GetWord() string{
+>>>>>>> 423f628b3877e2a8053b1749bac2ff34b1d675c8
 	n := GetIndex()
 	word, _ := LoadWord()
 	return word[n]
 }
 
+<<<<<<< HEAD
 func Exit() {
+=======
+func Exit(){
+>>>>>>> 423f628b3877e2a8053b1749bac2ff34b1d675c8
 	fmt.Println("Press Enter to exit...")
 	os.Exit(0)
 }
