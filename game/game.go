@@ -3,7 +3,6 @@ package game
 import (
 	"fmt"
 	"koodWordle/input"
-	"koodWordle/user"
 	"strings"
 )
 
@@ -53,7 +52,7 @@ func Game(input, word string) {
 	fmt.Println("Feedback:", result)
 }
 
-func StartGame(s user.User) {
+func StartGame() (int, bool) {
 	var count int = 0
 	var attempts int = 5
 	var won bool = false
@@ -72,8 +71,7 @@ func StartGame(s user.User) {
 		if userInput == word {
 			won = true
 			fmt.Println("Congratulations! You've guessed the word correctly.")
-			s.Stats.GamesWon++
-			return
+			return count, won
 		}
 		fmt.Println("Attempts remaining:", attempts)
 		attempts--
@@ -82,7 +80,7 @@ func StartGame(s user.User) {
 	if !won {
 		fmt.Println("Game over.The correct word was:", word)
 	}
-	s.Stats.TotalAttempts++
 	fmt.Println("Attempts:", count)
 
+	return count, won
 }

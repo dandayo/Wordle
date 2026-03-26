@@ -7,6 +7,8 @@ import (
 
 func main() {
 	user.GreetUser()
-	user.UserName()
-	game.StartGame()
+	currentUser := user.UserName()
+	attempts, won := game.StartGame()
+	user.UpdateStats(currentUser, attempts, won)
+	user.showStat()
 }
