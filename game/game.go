@@ -2,14 +2,14 @@ package game
 
 import (
 	"fmt"
-	"strings"
 	"koodWordle/input"
+	"strings"
 )
 
 const (
-	Green = "\033[32m"
-	Yellow  = "\033[33m"
-	Reset = "\033[0m"
+	Green  = "\033[32m"
+	Yellow = "\033[33m"
+	Reset  = "\033[0m"
 )
 
 func IsLower(s string) bool {
@@ -20,20 +20,22 @@ func IsLower(s string) bool {
 	}
 	return true
 }
-var word = input.GetWord()
-func Game(input, word string){
+
+var word = GetWord()
+
+func Game(input, word string) {
 
 	var result string
 	if input != word {
 		for i := 0; i < 5; i++ {
 			checkIn := input[i]
 			if input[i] == word[i] {
-				result += Green + string(rune(input[i]) - 'a' + 'A') + Reset
+				result += Green + string(rune(input[i])-'a'+'A') + Reset
 			} else {
 				found := false
-				for j := 0 ; j < 5 ; j++ {
+				for j := 0; j < 5; j++ {
 					if input[i] == word[j] {
-						result += Yellow + string(rune(word[j]) - 'a' + 'A') + Reset
+						result += Yellow + string(rune(word[j])-'a'+'A') + Reset
 						found = true
 						break
 					}
@@ -44,11 +46,11 @@ func Game(input, word string){
 			}
 		}
 	} else {
-		for l := 0; l < 5 ; l++{
-			result += Green + string(rune(input[l]) - 'a' + 'A') + Reset
+		for l := 0; l < 5; l++ {
+			result += Green + string(rune(input[l])-'a'+'A') + Reset
 		}
 	}
-	fmt.Println("Feedback:",result)
+	fmt.Println("Feedback:", result)
 }
 
 func StartGame() {
@@ -60,11 +62,11 @@ func StartGame() {
 		fmt.Println("Enter your guess:")
 		userInput := strings.TrimSpace(input.Input())
 
-		if input.IsWord(userInput) == false{
+		if input.IsWord(userInput) == false {
 			continue
 		}
 
-		fmt.Println("Remaining letters:",input.UpdateLetters(userInput, word))
+		fmt.Println("Remaining letters:", input.UpdateLetters(userInput, word))
 		Game(userInput, word)
 
 		if userInput == word {

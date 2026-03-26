@@ -5,8 +5,8 @@ import (
 	"koodWordle/user"
 )
 
-func main(){
-	user.UserName()
+func main() {
 	user.GreetUser()
+	user.UserName()
 	game.StartGame()
 }

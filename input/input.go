@@ -3,7 +3,6 @@ package input
 import (
 	"bufio"
 	"fmt"
-	"math/rand"
 	"os"
 	"strings"
 )
@@ -74,38 +73,4 @@ func UpdateLetters(input, word string) string {
 	}
 	alphabet = newAnswer
 	return alphabet
-}
-
-func LoadWord() ([]string, error) {
-	file, err := os.Open("words/wordle-words.txt")
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	var words []string
-	scanner := bufio.NewScanner(file)
-
-	for scanner.Scan() {
-		words = append(words, scanner.Text())
-	}
-
-	return words, scanner.Err()
-}
-
-func GetRandomIndex() int {
-	words, _ := LoadWord()
-	n := len(words)
-	return rand.Intn(n)
-}
-
-func GetWord() string {
-	n := GetRandomIndex()
-	word, _ := LoadWord()
-	return word[n]
-}
-
-func Exit() {
-	fmt.Println("Press Enter to exit...")
-	os.Exit(0)
 }

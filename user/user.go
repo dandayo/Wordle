@@ -2,6 +2,7 @@ package user
 
 import (
 	"fmt"
+	"koodWordle/game"
 	"koodWordle/input"
 )
 
@@ -35,7 +36,7 @@ func Stats(s *User) {
 			fmt.Sprintf("Games won: %d", s.Stats.GamesWon)
 			fmt.Sprintf("Average attempts per game: %d", s.Stats.TotalAttempts)
 		} else if answer == "no" {
-			input.Exit()
+			game.Exit()
 		} else {
 			fmt.Sprintf("Try again!")
 		}
