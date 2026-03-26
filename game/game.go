@@ -3,6 +3,7 @@ package game
 import (
 	"fmt"
 	"koodWordle/input"
+	"koodWordle/user"
 	"strings"
 )
 
@@ -24,7 +25,6 @@ func IsLower(s string) bool {
 var word = GetWord()
 
 func Game(input, word string) {
-
 	var result string
 	if input != word {
 		for i := 0; i < 5; i++ {
@@ -53,7 +53,7 @@ func Game(input, word string) {
 	fmt.Println("Feedback:", result)
 }
 
-func StartGame() {
+func StartGame(s user.User) {
 	var count int = 0
 	var attempts int = 5
 	var won bool = false
@@ -72,6 +72,7 @@ func StartGame() {
 		if userInput == word {
 			won = true
 			fmt.Println("Congratulations! You've guessed the word correctly.")
+			s.Stats.GamesWon++
 			return
 		}
 		fmt.Println("Attempts remaining:", attempts)
@@ -81,5 +82,7 @@ func StartGame() {
 	if !won {
 		fmt.Println("Game over.The correct word was:", word)
 	}
+	s.Stats.TotalAttempts++
 	fmt.Println("Attempts:", count)
+
 }
