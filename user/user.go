@@ -48,7 +48,6 @@ func Stats(s *User) {
 			fmt.Sprintf("Games played: %d: ", s.Stats.GamesPlayed)
 			fmt.Sprintf("Games won: %d", s.Stats.GamesWon)
 			fmt.Sprintf("Average attempts per game: %f", float64(s.Stats.TotalAttempts)/float64(s.Stats.GamesWon))
-			return
 		} else if answer == "no" {
 			game.Exit()
 		} else {
@@ -57,7 +56,7 @@ func Stats(s *User) {
 	}
 }
 
-func UpdateUserStats(s *User, name string, won bool, attempts int) {
+func UpdateUserStats(s *User, won bool, attempts int) {
 	s.Stats.GamesPlayed++
 	if won {
 		s.Stats.GamesWon++
