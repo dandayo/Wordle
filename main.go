@@ -7,8 +7,9 @@ import (
 
 func main() {
 	user.GreetUser()
-	currentUser := user.UserName()
+	name := user.UserName()
+	currentUser := user.CreateUser(name)
 	attempts, won := game.StartGame()
-	user.UpdateStats(currentUser, attempts, won)
-	user.showStat()
+	user.UpdateUserStats(currentUser, won, attempts)
+	user.Stats(&user.User{})
 }
