@@ -11,5 +11,5 @@ func main() {
 	currentUser := user.CreateUser(name)
 	attempts, won := game.StartGame()
 	user.UpdateUserStats(currentUser, won, attempts)
-	user.Stats(&user.User{})
+	user.Stats(currentUser)
 }

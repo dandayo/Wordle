@@ -39,27 +39,33 @@ type GameStats struct {
 	TotalAttempts int
 }
 
-func Stats(s *User) {
-	fmt.Println("Do you want to see your stats? (yes/no):")
-	answer := input.Input()
-	for {
-		if answer == "yes" {
-			fmt.Sprintf("Stats for: %s", s.Name)
-			fmt.Sprintf("Games played: %d: ", s.Stats.GamesPlayed)
-			fmt.Sprintf("Games won: %d", s.Stats.GamesWon)
-			fmt.Sprintf("Average attempts per game: %f", float64(s.Stats.TotalAttempts)/float64(s.Stats.GamesWon))
-		} else if answer == "no" {
-			game.Exit()
-		} else {
-			fmt.Sprintf("Try again!")
-		}
-	}
-}
-
 func UpdateUserStats(s *User, won bool, attempts int) {
 	s.Stats.GamesPlayed++
 	if won {
 		s.Stats.GamesWon++
 	}
 	s.Stats.TotalAttempts += attempts
+}
+
+func Stats(s *User) {
+	fmt.Println("Do you want to see your stats? (yes/no):")
+	answer := input.Input()
+	for {
+		if answer == "yes" {
+			fmt.Printf("\nStats for: %s\n", s.Name)
+			fmt.Printf("Games played: %d\n", s.Stats.GamesPlayed)
+			fmt.Printf("Games won: %d\n", s.Stats.GamesWon)
+			if s.Stats.GamesWon > 0 {
+				fmt.Printf("Average attempts per game: %f\n", float64(s.Stats.TotalAttempts)/float64(s.Stats.GamesWon))
+			} else {
+				fmt.Printf("No wins yet\n")
+
+			}
+			break
+		} else if answer == "no" {
+			game.Exit()
+		} else {
+			fmt.Sprintf("Try again!")
+		}
+	}
 }
