@@ -56,16 +56,16 @@ func Stats(s *User) {
 			fmt.Printf("Games played: %d\n", s.Stats.GamesPlayed)
 			fmt.Printf("Games won: %d\n", s.Stats.GamesWon)
 			if s.Stats.GamesWon > 0 {
-				fmt.Printf("Average attempts per game: %f\n", float64(s.Stats.TotalAttempts)/float64(s.Stats.GamesWon))
+				fmt.Printf("Average attempts per game: %d\n", s.Stats.TotalAttempts/s.Stats.GamesWon)
 			} else {
 				fmt.Printf("No wins yet\n")
-
 			}
 			break
 		} else if answer == "no" {
 			game.Exit()
 		} else {
 			fmt.Sprintf("Try again!")
+			break
 		}
 	}
 }

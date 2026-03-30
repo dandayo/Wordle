@@ -54,23 +54,23 @@ var alphabet string = Letters()
 func UpdateLetters(input, word string) string {
 	new := CheckLetters(input)
 	var newAnswer string
-	newAlphabet := strings.TrimSpace(alphabet)
-	for i := 0; i < len(newAlphabet); i++ {
-		var checkIn bool = false
-		for _, a := range word {
-			if rune(newAlphabet[i]) == a-'a'+'A' {
-				checkIn = true
-			}
+
+	for _, letter := range alphabet {
+
+		if letter == ' ' {
+			newAnswer += " "
+			continue
 		}
-		for _, v := range new {
-			if rune(newAlphabet[i]) == v {
-				if checkIn != true {
-					i++
-				}
-			}
+
+		inWord := strings.ContainsRune(word, rune(letter+32))
+
+		guessed := strings.ContainsRune(string(new), letter)
+
+		if inWord || !guessed {
+			newAnswer += string(letter)
 		}
-		newAnswer += string(rune(newAlphabet[i]))
 	}
+
 	alphabet = newAnswer
 	return alphabet
 }
