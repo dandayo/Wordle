@@ -1,9 +1,11 @@
 package user
 
 import (
+	"encoding/csv"
 	"fmt"
 	"koodWordle/game"
 	"koodWordle/input"
+	"os"
 )
 
 func UserName() string {
@@ -45,6 +47,34 @@ func UpdateUserStats(s *User, won bool, attempts int) {
 		s.Stats.GamesWon++
 	}
 	s.Stats.TotalAttempts += attempts
+
+	// Save stats to CSV file
+	file, err := os.Create("user_stats.csv")
+	if err != nil {
+		fmt.Println("Error creating stats file:", err)
+		return
+	}
+
+	writer := csv.NewWriter(file)
+	defer file.Close()
+
+	err = writer.Write([]string{"Username", "Games Played", "Games Won", "Total Attempts"})
+	if err != nil {
+		fmt.Println("Error writing header to stats file:", err)
+		return
+	}
+
+	err = writer.Write([]string{s.Name, fmt.Sprintf("%d", s.Stats.GamesPlayed), fmt.Sprintf("%d", s.Stats.GamesWon), fmt.Sprintf("%d", s.Stats.TotalAttempts)})
+
+	if err != nil {
+		fmt.Println("Error writing stats to file:", err)
+		return
+	}
+
+	writer.Flush()
+	if err := writer.Error(); err != nil {
+		fmt.Println("Error flushing CSV writer:", err)
+	}
 }
 
 func Stats(s *User) {
