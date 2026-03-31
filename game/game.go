@@ -52,6 +52,10 @@ func Game(input, word string) {
 	fmt.Println("Feedback:", result)
 }
 
+func CheckWord(input, word string) {
+
+}
+
 func StartGame() (int, bool) {
 	var count int = 0
 	var attempts int = 5
