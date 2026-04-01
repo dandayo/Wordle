@@ -52,8 +52,15 @@ func Game(input, word string) {
 	fmt.Println("Feedback:", result)
 }
 
-func CheckWord(input, word string) {
-
+func CheckWord(input string) bool {
+	words, _ := LoadWord()
+	var isWord bool = false
+	for _, word := range words {
+		if word == input {
+			isWord = true
+		}
+	}
+	return isWord
 }
 
 func StartGame() (int, bool) {
@@ -64,7 +71,10 @@ func StartGame() (int, bool) {
 	for count < 6 {
 		fmt.Println("Enter your guess:")
 		userInput := strings.TrimSpace(input.Input())
-
+		if CheckWord(userInput) == false {
+			fmt.Println("There is no such word.")
+			continue
+		}
 		if input.IsWord(userInput) == false {
 			continue
 		}
