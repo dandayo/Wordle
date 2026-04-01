@@ -49,19 +49,24 @@ func UpdateUserStats(s *User, won bool, attempts int) {
 	s.Stats.TotalAttempts += attempts
 
 	// Save stats to CSV file
-	file, err := os.Create("user_stats.csv")
-	if err != nil {
-		fmt.Println("Error creating stats file:", err)
-		return
-	}
-
-	writer := csv.NewWriter(file)
+	file, err := os.OpenFile(
+		"user/user_stats.csv",
+		os.O_APPEND|os.O_CREATE|os.O_WRONLY,
+		0644,
+	)
 	defer file.Close()
+	writer := csv.NewWriter(file)
 
-	err = writer.Write([]string{"Username", "Games Played", "Games Won", "Total Attempts"})
-	if err != nil {
-		fmt.Println("Error writing header to stats file:", err)
-		return
+	info, _ := file.Stat()
+	isEmpty := info.Size() == 0
+
+	if isEmpty {
+		writer.Write([]string{
+			"Username",
+			"Games Played",
+			"Games Won",
+			"Total Attempts",
+		})
 	}
 
 	err = writer.Write([]string{s.Name, fmt.Sprintf("%d", s.Stats.GamesPlayed), fmt.Sprintf("%d", s.Stats.GamesWon), fmt.Sprintf("%d", s.Stats.TotalAttempts)})
