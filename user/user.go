@@ -47,8 +47,31 @@ func UpdateUserStats(s *User, won bool, attempts int) {
 		s.Stats.GamesWon++
 	}
 	s.Stats.TotalAttempts += attempts
+}
 
-	// Save stats to CSV file
+func LoadUser(name string) *User {
+	file, err := os.Open("user/user_stats.csv")
+	if err != nil {
+		fmt.Println("Error opening stats file:", err)
+		return nil
+	}
+	defer file.Close()
+
+	reader := csv.NewReader(file)
+	records, err := reader.ReadAll()
+	if err != nil {
+		fmt.Println("Error reading stats file:", err)
+		return nil
+	}
+	for _, record := range records[1:] { // Skip header
+		if record[0] == name {
+
+		}
+	}
+	return nil
+}
+
+func GetUser(s *User) {
 	file, err := os.OpenFile(
 		"user/user_stats.csv",
 		os.O_APPEND|os.O_CREATE|os.O_WRONLY,
@@ -69,7 +92,7 @@ func UpdateUserStats(s *User, won bool, attempts int) {
 		})
 	}
 
-	err = writer.Write([]string{s.Name, fmt.Sprintf("%d", s.Stats.GamesPlayed), fmt.Sprintf("%d", s.Stats.GamesWon), fmt.Sprintf("%d", s.Stats.TotalAttempts)})
+	err = writer.Write([]string{s.Name, fmt.Sprintf("%d", s.Stats.GamesPlayed), fmt.Sprintf("%d", s.Stats.GamesWon), fmt.Sprintf("%d", s.Stats.TotalAttempts)}) // Save stats to CSV file
 
 	if err != nil {
 		fmt.Println("Error writing stats to file:", err)
@@ -103,4 +126,5 @@ func Stats(s *User) {
 			break
 		}
 	}
+	GetUser(s)
 }
