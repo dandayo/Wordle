@@ -71,7 +71,7 @@ func LoadUser(name string) *User {
 	return nil
 }
 
-func GetUser(s *User) {
+func GetUser(s *User) { //get user stats and save to csv file
 	file, err := os.OpenFile(
 		"user/user_stats.csv",
 		os.O_APPEND|os.O_CREATE|os.O_WRONLY,
