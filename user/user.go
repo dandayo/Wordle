@@ -47,6 +47,8 @@ func UpdateUserStats(s *User, won bool, attempts int) {
 		s.Stats.GamesWon++
 	}
 	s.Stats.TotalAttempts += attempts
+
+	GetUser(s)
 }
 
 func LoadUser(name string) *User {
@@ -126,5 +128,4 @@ func Stats(s *User) {
 			break
 		}
 	}
-	GetUser(s)
 }
