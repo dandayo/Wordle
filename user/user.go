@@ -51,6 +51,10 @@ func UpdateUserStats(s *User, won bool, attempts int) {
 	GetUser(s)
 }
 
+func CheckUser() {
+
+}
+
 func LoadUser(name string) *User {
 	file, err := os.Open("user/user_stats.csv")
 	if err != nil {
