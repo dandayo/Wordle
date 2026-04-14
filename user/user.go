@@ -30,17 +30,7 @@ type GameStats struct {
 	TotalAttempts int
 }
 
-func UpdateUserStats(s *User, won bool, attempts int) {
-	s.Stats.GamesPlayed++
-	if won {
-		s.Stats.GamesWon++
-	}
-	s.Stats.TotalAttempts += attempts
-
-	GetUser(s)
-}
-
-func LoadUser(name string) *User { // function to check if user exists in csv file and load stats if exists
+func ReadStats() [][]string {
 	file, err := os.Open("user/user_stats.csv")
 	if err != nil {
 		fmt.Println("Error opening stats file:", err)
@@ -54,6 +44,46 @@ func LoadUser(name string) *User { // function to check if user exists in csv fi
 		fmt.Println("Error reading stats file:", err)
 		return nil
 	}
+
+	return records
+}
+
+func UpdateUserStats(s *User, won bool, attempts int) {
+	s.Stats.GamesPlayed++
+	if won {
+		s.Stats.GamesWon++
+	}
+	s.Stats.TotalAttempts += attempts
+
+	records := ReadStats()
+
+	found := false
+
+	// Update existing user stats if user already exists in the file
+	for i := 1; i < len(records); i++ {
+		if records[i][0] == s.Name {
+			records[i][1] = fmt.Sprintf("%d", s.Stats.GamesPlayed)
+			records[i][2] = fmt.Sprintf("%d", s.Stats.GamesWon)
+			records[i][3] = fmt.Sprintf("%d", s.Stats.TotalAttempts)
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		records = append(records, []string{
+			s.Name,
+			fmt.Sprintf("%d", s.Stats.GamesPlayed),
+			fmt.Sprintf("%d", s.Stats.GamesWon),
+			fmt.Sprintf("%d", s.Stats.TotalAttempts),
+		})
+	}
+
+	SaveAll(records)
+}
+
+func LoadUser(name string) *User { // function to check if user exists in csv file and load stats if exists
+	records := ReadStats()
 	for _, record := range records[1:] { // Skip header
 		if record[0] == name {
 			gamesPlayed := 0
@@ -71,51 +101,33 @@ func LoadUser(name string) *User { // function to check if user exists in csv fi
 					TotalAttempts: totalAttempts,
 				},
 			}
-		} else {
-			return &User{
-				Name: name,
-				Stats: GameStats{
-					GamesPlayed:   0,
-					GamesWon:      0,
-					TotalAttempts: 0,
-				},
-			}
 		}
 	}
-	return nil
+	// or create a new user
+	return &User{
+		Name: name,
+		Stats: GameStats{
+			GamesPlayed:   0,
+			GamesWon:      0,
+			TotalAttempts: 0,
+		},
+	}
 }
 
-func GetUser(s *User) { //get user stats and save to csv file
-	file, err := os.OpenFile(
-		"user/user_stats.csv",
-		os.O_APPEND|os.O_CREATE|os.O_WRONLY,
-		0644,
-	)
-	defer file.Close()
-	writer := csv.NewWriter(file)
-
-	info, _ := file.Stat()
-	isEmpty := info.Size() == 0
-
-	if isEmpty {
-		writer.Write([]string{
-			"Username",
-			"Games Played",
-			"Games Won",
-			"Total Attempts",
-		})
-	}
-
-	err = writer.Write([]string{s.Name, fmt.Sprintf("%d", s.Stats.GamesPlayed), fmt.Sprintf("%d", s.Stats.GamesWon), fmt.Sprintf("%d", s.Stats.TotalAttempts)}) // Save stats to CSV file
-
+func SaveAll(records [][]string) {
+	file, err := os.Create("user/user_stats.csv")
 	if err != nil {
-		fmt.Println("Error writing stats to file:", err)
+		fmt.Println("Error creating file:", err)
 		return
 	}
+	defer file.Close()
 
-	writer.Flush()
-	if err := writer.Error(); err != nil {
-		fmt.Println("Error flushing CSV writer:", err)
+	writer := csv.NewWriter(file)
+
+	err = writer.WriteAll(records)
+	if err != nil {
+		fmt.Println("Error writing records:", err)
+		return
 	}
 }
 
@@ -137,7 +149,7 @@ func Stats(s *User) {
 			game.Exit()
 		} else {
 			fmt.Sprintf("Try again!")
-			break
+			Stats(s)
 		}
 	}
 }
