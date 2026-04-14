@@ -15,17 +15,6 @@ func UserName() string {
 	return name
 }
 
-func CreateUser(name string) *User {
-	return &User{
-		Name: name,
-		Stats: GameStats{
-			GamesPlayed:   0,
-			GamesWon:      0,
-			TotalAttempts: 0,
-		},
-	}
-}
-
 func GreetUser() {
 	fmt.Println("Welcome to Wordle! Guess the 5-letter word.")
 }
@@ -51,11 +40,7 @@ func UpdateUserStats(s *User, won bool, attempts int) {
 	GetUser(s)
 }
 
-func CheckUser() {
-
-}
-
-func LoadUser(name string) *User {
+func LoadUser(name string) *User { // function to check if user exists in csv file and load stats if exists
 	file, err := os.Open("user/user_stats.csv")
 	if err != nil {
 		fmt.Println("Error opening stats file:", err)
@@ -71,7 +56,30 @@ func LoadUser(name string) *User {
 	}
 	for _, record := range records[1:] { // Skip header
 		if record[0] == name {
+			gamesPlayed := 0
+			gamesWon := 0
+			totalAttempts := 0
+			fmt.Sscanf(record[1], "%d", &gamesPlayed)
+			fmt.Sscanf(record[2], "%d", &gamesWon)
+			fmt.Sscanf(record[3], "%d", &totalAttempts)
 
+			return &User{
+				Name: name,
+				Stats: GameStats{
+					GamesPlayed:   gamesPlayed,
+					GamesWon:      gamesWon,
+					TotalAttempts: totalAttempts,
+				},
+			}
+		} else {
+			return &User{
+				Name: name,
+				Stats: GameStats{
+					GamesPlayed:   0,
+					GamesWon:      0,
+					TotalAttempts: 0,
+				},
+			}
 		}
 	}
 	return nil
