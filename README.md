@@ -114,7 +114,7 @@ Using a local `GOCACHE` keeps the build files inside the project folder, which c
 ```text
 Welcome to Wordle! Guess the 5-letter word.
 Enter your username:
-daniil
+SwAgA123
 Enter your guess:
 apple
 Remaining letters: A B C D F G H I J K L M N O P Q R S T U V W X Y Z

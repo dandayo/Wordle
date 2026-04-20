@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-const (
+const ( //colors
 	Green  = "\033[32m"
 	Yellow = "\033[33m"
 	Reset  = "\033[0m"
